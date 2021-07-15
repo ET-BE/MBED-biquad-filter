@@ -17,7 +17,7 @@ BiquadFilter::BiquadFilter(float Fs, float Fc, TYPE type) {
         break;
 
     case TYPE_HIGH_PASS:
-        // Not yet implemented
+        setFilterButterHighpass(Fs, Fc);
         break;
     }
     
@@ -63,8 +63,7 @@ void BiquadFilter::setFilter() {
 // Run the butter algorithm
 void BiquadFilter::setFilterButterLowpass(float Fs, float Fc)
 {
-    if (Fc >= Fs / 2.0f)
-    {
+    if (Fc >= Fs / 2.0f) {
         setFilter();
         return;
     }
@@ -85,8 +84,7 @@ void BiquadFilter::setFilterButterLowpass(float Fs, float Fc)
 // Run the butter algorithm
 void BiquadFilter::setFilterButterHighpass(float Fs, float Fc)
 {
-    if (Fc >= Fs / 2.0f)
-    {
+    if (Fc >= Fs / 2.0f) {
         setFilter();
         return;
     }
@@ -107,6 +105,8 @@ void BiquadFilter::setFilterButterHighpass(float Fs, float Fc)
 // Get new filtered value
 float BiquadFilter::sample(float x)
 {
+    // Sample with direct form II
+
     // Scooch w array
     w[0] = w[1];
     w[1] = w[2];
@@ -116,4 +116,10 @@ float BiquadFilter::sample(float x)
     
     // Return y
     return b[0] * w[2] + b[1] * w[1] + b[2] * w[0];
+}
+
+// Reset
+void BiquadFilter::reset(float x) {
+
+    w[0] = w[1] = w[2] = x / (1.0f + a[0] + a[1]);
 }

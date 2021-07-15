@@ -66,6 +66,11 @@ public:
      * Take a new sample, returned filtered value.
      */
     float sample(float x);
+
+    /**
+     * Reset filter to a value (0 by default).
+     */
+    void reset(float x = 0.0f);
     
 private:
 
